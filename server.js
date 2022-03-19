@@ -6,6 +6,9 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
+app.use('/api/users', require('./routes/userAPI'));
+app.use('/api/products', require('./routes/productsAPI'));
+
 app.get('/', (req, res) => {
   res.send('YAY!');
 });
