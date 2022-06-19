@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 router.get('/', (req, res) => res.send('Users Route'));
@@ -28,10 +29,12 @@ router.post(
           .json({ errors: [{ msg: 'User already exists' }] });
       }
       user = new User({ name, email, password });
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
       user.save();
       res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: 'Server Error' });
     }
   }
 );
