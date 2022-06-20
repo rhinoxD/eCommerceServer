@@ -11,6 +11,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 app.use('/api/users', require('./routes/userAPI'));
 app.use('/api/products', require('./routes/productsAPI'));
+app.use('/api/auth', require('./routes/authApi'));
 
 app.get('/', (req, res) => {
   res.send('YAY!');
