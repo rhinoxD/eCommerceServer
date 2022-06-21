@@ -5,7 +5,28 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../middleware/authorization');
 const Product = require('../models/Product');
 
-router.get('/', (req, res) => res.send('Product Route'));
+// get all products
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ msg: 'Server Error' });
+  }
+});
+
+// get a product
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(400).json({ msg: 'Product not found.' });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ msg: 'Server Error' });
+  }
+});
 
 router.post('/', [
   auth,
